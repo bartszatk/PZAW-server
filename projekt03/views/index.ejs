@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mikroblog</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Mikroblog</h1>
+  <a href="/new">Dodaj nowy wpis</a>
+  <hr>
+
+  <% if (posts.length === 0) { %>
+    <p>Brak wpisów.</p>
+  <% } else { %>
+    <% posts.forEach(post => { %>
+      <div class="post">
+        <h2><%= post.title %></h2>
+        <p><%= post.content %></p>
+
+        <a href="/edit/<%= post.id %>">Edytuj</a>
+
+        <form action="/delete/<%= post.id %>" method="post" style="display:inline;">
+          <button type="submit">Usuń</button>
+        </form>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
