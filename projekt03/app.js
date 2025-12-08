@@ -5,6 +5,7 @@ import posts from "./models/posts.js";
 const app = express();
 const port = 8000;
 
+posts.seedTestData();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));

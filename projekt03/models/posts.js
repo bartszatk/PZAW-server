@@ -60,6 +60,12 @@ export function validatePost(post) {
   return errors;
 }
 
+export function seedTestData() {
+  if (getAllPosts().length === 0) {
+    addPost({ title: "Wpis1", content: "Tresc1" });
+    addPost({ title: "Wpis2", content: "Tresc2" });
+  }
+}
 
 export default {
   getAllPosts,
@@ -68,4 +74,5 @@ export default {
   updatePost,
   deletePost,
   validatePost,
+  seedTestData,
 };
