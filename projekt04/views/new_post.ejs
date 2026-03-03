@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Nowy wpis</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Dodaj nowy wpis</h1>
+  <a href="/">Powrót do mikrobloga</a>
+
+  <% if (errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(err => { %>
+        <li><%= err %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/new" method="post">
+    <p>
+      <label>Tytuł:<br>
+      <input type="text" name="title" value="<%= post.title || "" %>"></label>
+    </p>
+    <p>
+      <label>Treść:<br>
+      <textarea name="content" rows="5" cols="40"><%= post.content || "" %></textarea></label>
+    </p>
+    <button type="submit">Dodaj wpis</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,65 @@
+body {
+  font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f4f8; 
+  color: #1a1a1a; 
+  line-height: 1.6;
+}
+
+.post {
+  border: 1px solid #cfd8e0; 
+  border-radius: 12px; 
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #ffffff; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.errors {
+  color: #e74c3c; 
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #cfd8e0;
+  border-radius: 10px; 
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus {
+  border-color: #3498db; 
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #2980b9; 
+  transform: translateY(-2px);
+}
+
+
+/* CSS WYGENEROWANY PRZEZ CHATGPT */
