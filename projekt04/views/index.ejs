@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Mikroblog</title>
+  <title>Blog</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Mikroblog</h1>
-  <a href="/new">Dodaj nowy wpis</a>
+
+  <h1>Blog</h1>
+
+  <nav>
+    <% if (user) { %>
+      <span>Zalogowany jako: <strong><%= user.login %></strong></span>
+      <a href="/logout">Wyloguj</a>
+      <a href="/new">Nowy post</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/register">Rejestracja</a>
+    <% } %>
+  </nav>
+
   <hr>
 
-  <% if (posts.length === 0) { %>
-    <p>Brak wpisów.</p>
-  <% } else { %>
-    <% posts.forEach(post => { %>
-      <div class="post">
-        <h2><%= post.title %></h2>
-        <p><%= post.content %></p>
+  <% posts.forEach(post => { %>
+    <div class="post">
+      <h2><%= post.title %></h2>
+      <p><%= post.content %></p>
+      <a href="/edit/<%= post.id %>">Edytuj</a>
+      <form action="/delete/<%= post.id %>" method="POST" style="display:inline;">
+        <button>Usuń</button>
+      </form>
+    </div>
+  <% }) %>
 
-        <a href="/edit/<%= post.id %>">Edytuj</a>
-
-        <form action="/delete/<%= post.id %>" method="post" style="display:inline;">
-          <button type="submit">Usuń</button>
-        </form>
-      </div>
-    <% }) %>
-  <% } %>
 </body>
 </html>

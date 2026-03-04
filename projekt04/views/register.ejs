@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Rejestracja</h1>
+
+  <% if (errors.length > 0) { %>
+    <div class="errors"><%= errors[0] %></div>
+  <% } %>
+
+  <form method="POST">
+    <input name="login" placeholder="Login">
+    <input type="password" name="password" placeholder="Hasło">
+    <button>Zarejestruj</button>
+  </form>
+
+  <a href="/">Powrót</a>
+</body>
+</html>
