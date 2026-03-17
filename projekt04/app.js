@@ -4,6 +4,9 @@ import cookieParser from "cookie-parser";
 import * as posts from "./models/posts.js";
 import * as users from "./models/users.js";
 
+users.createUser("admin", "admin", "admin").catch(() => {});
+posts.seedTestData();
+
 const app = express();
 const port = 8000;
 
@@ -32,7 +35,7 @@ app.get("/register", (req, res) => {
   res.render("register", { errors: [] });
 });
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
@@ -40,7 +43,7 @@ app.post("/register", (req, res) => {
   }
 
   try {
-    users.createUser(login, password);
+    await users.createUser(login, password);
     res.redirect("/login");
   } catch {
     res.render("register", { errors: ["Login zajęty"] });
@@ -67,10 +70,13 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/new", (req, res) => {
+  if (!req.user) return res.redirect("/login");
   res.render("new_post", { post: {}, errors: [], user: req.user });
 });
 
 app.post("/new", (req, res) => {
+  if (!req.user) return res.redirect("/login");
+
   const post = { title: req.body.title, content: req.body.content };
   const errors = posts.validatePost(post);
 
@@ -78,20 +84,32 @@ app.post("/new", (req, res) => {
     return res.render("new_post", { post, errors, user: req.user });
   }
 
-  posts.addPost(post);
+  posts.addPost(post, req.user.id);
   res.redirect("/");
 });
 
 app.get("/edit/:id", (req, res) => {
+  if (!req.user) return res.redirect("/login");
+
   const post = posts.getPost(req.params.id);
   if (!post) return res.redirect("/");
+
+  if (req.user.role !== "admin" && post.user_id !== req.user.id) {
+    return res.redirect("/");
+  }
 
   res.render("edit_post", { post, errors: [], user: req.user });
 });
 
 app.post("/edit/:id", (req, res) => {
+  if (!req.user) return res.redirect("/login");
+
   const post = posts.getPost(req.params.id);
   if (!post) return res.redirect("/");
+
+  if (req.user.role !== "admin" && post.user_id !== req.user.id) {
+    return res.redirect("/");
+  }
 
   const updated = { title: req.body.title, content: req.body.content };
   const errors = posts.validatePost(updated);
@@ -109,8 +127,14 @@ app.post("/edit/:id", (req, res) => {
 });
 
 app.post("/delete/:id", (req, res) => {
+  if (!req.user) return res.redirect("/login");
+
   const post = posts.getPost(req.params.id);
   if (!post) return res.redirect("/");
+
+  if (req.user.role !== "admin" && post.user_id !== req.user.id) {
+    return res.redirect("/");
+  }
 
   posts.deletePost(post.id);
   res.redirect("/");

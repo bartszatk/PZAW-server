@@ -7,22 +7,23 @@ db.exec(`
 CREATE TABLE IF NOT EXISTS posts (
     id      INTEGER PRIMARY KEY,
     title   TEXT NOT NULL,
-    content TEXT NOT NULL
+    content TEXT NOT NULL,
+    user_id INTEGER
 ) STRICT;
 `);
 
 const db_ops = {
   insert_post: db.prepare(
-    `INSERT INTO posts (title, content) VALUES (?, ?) RETURNING id, title, content;`
+    `INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?) RETURNING id, title, content, user_id;`
   ),
   get_all_posts: db.prepare(
-    `SELECT id, title, content FROM posts ORDER BY id DESC;`
+    `SELECT id, title, content, user_id FROM posts ORDER BY id DESC;`
   ),
   get_post: db.prepare(
-    `SELECT id, title, content FROM posts WHERE id = ?;`
+    `SELECT id, title, content, user_id FROM posts WHERE id = ?;`
   ),
   update_post: db.prepare(
-    `UPDATE posts SET title = ?, content = ? WHERE id = ? RETURNING id, title, content;`
+    `UPDATE posts SET title = ?, content = ? WHERE id = ? RETURNING id, title, content, user_id;`
   ),
   delete_post: db.prepare(
     `DELETE FROM posts WHERE id = ?;`
@@ -37,8 +38,8 @@ export function getPost(id) {
   return db_ops.get_post.get(id);
 }
 
-export function addPost(post) {
-  return db_ops.insert_post.get(post.title, post.content);
+export function addPost(post, user_id) {
+  return db_ops.insert_post.get(post.title, post.content, user_id);
 }
 
 export function updatePost(id, post) {
@@ -62,8 +63,8 @@ export function validatePost(post) {
 
 export function seedTestData() {
   if (getAllPosts().length === 0) {
-    addPost({ title: "Wpis1", content: "Tresc1" });
-    addPost({ title: "Wpis2", content: "Tresc2" });
+    addPost({ title: "Wpis1", content: "Tresc1" }, null);
+    addPost({ title: "Wpis2", content: "Tresc2" }, null);
   }
 }
 

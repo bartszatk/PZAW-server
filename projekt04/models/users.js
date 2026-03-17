@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS users (
 `);
 
 const insert_user = db.prepare(`
-INSERT INTO users (login, password_hash, salt)
+INSERT INTO users (login, password_hash, role)
 VALUES (?, ?, ?)
-RETURNING id, login;
+RETURNING id, login, role;
 `);
 
 const get_user_by_login = db.prepare(`
@@ -23,14 +23,8 @@ SELECT * FROM users WHERE login = ?;
 `);
 
 const get_user_by_id = db.prepare(`
-SELECT id, login FROM users WHERE id = ?;
+SELECT id, login, role FROM users WHERE id = ?;
 `);
-
-function hashPassword(password, salt) {
-  return crypto
-    .pbkdf2Sync(password, salt, 10000, 64, "sha512")
-    .toString("hex");
-}
 
 export async function createUser(login, password, role = "user") {
   const hash = await argon2.hash(password);
