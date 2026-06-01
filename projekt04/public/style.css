@@ -61,5 +61,17 @@ button:hover {
   transform: translateY(-2px);
 }
 
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.post-author {
+  font-size: 0.95rem;
+  color: #556379;
+}
 
 /* CSS WYGENEROWANY PRZEZ CHATGPT */

@@ -1,0 +1,10 @@
+<nav>
+  <% if (user) { %>
+    <span>Zalogowany jako: <strong><%= user.login %></strong></span>
+    <a href="/logout">Wyloguj</a>
+    <a href="/new">Nowy post</a>
+  <% } else { %>
+    <a href="/login">Login</a>
+    <a href="/register">Rejestracja</a>
+  <% } %>
+</nav>

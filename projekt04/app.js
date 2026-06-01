@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import * as posts from "./models/posts.js";
 import * as users from "./models/users.js";
 
+const COOKIE_SECRET = "super-secure-cookie-key";
+
 users.createUser("admin", "admin", "admin").catch(() => {});
 posts.seedTestData();
 
@@ -13,11 +15,11 @@ const port = 8000;
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(COOKIE_SECRET));
 app.use(morgan("dev"));
 
 app.use((req, res, next) => {
-  const userId = req.cookies.user_id;
+  const userId = req.signedCookies.user_id;
   if (userId) {
     req.user = users.getUserById(userId);
   } else {
@@ -27,8 +29,8 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const allPosts = posts.getAllPosts();
-  res.render("index", { posts: allPosts, user: req.user });
+  const postsWithAuthors = posts.getAllPosts();
+  res.render("index", { posts: postsWithAuthors, user: req.user });
 });
 
 app.get("/register", (req, res) => {
@@ -60,7 +62,11 @@ app.post("/login", async (req, res) => {
     return res.render("login", { errors: ["Niepoprawne dane"] });
   }
 
-  res.cookie("user_id", user.id);
+  res.cookie("user_id", user.id, {
+    signed: true,
+    httpOnly: true,
+    sameSite: "lax",
+  });
   res.redirect("/");
 });
 

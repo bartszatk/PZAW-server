@@ -1,41 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Blog</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
+<%- include('partials/header', { title: 'Blog' }) %>
 
   <h1>Blog</h1>
 
-  <nav>
-    <% if (user) { %>
-      <span>Zalogowany jako: <strong><%= user.login %></strong></span>
-      <a href="/logout">Wyloguj</a>
-      <a href="/new">Nowy post</a>
-    <% } else { %>
-      <a href="/login">Login</a>
-      <a href="/register">Rejestracja</a>
-    <% } %>
-  </nav>
+  <%- include('partials/nav') %>
 
   <hr>
 
   <% posts.forEach(post => { %>
-    <div class="post">
-      <h2><%= post.title %></h2>
-      <p><%= post.content %></p>
-
-      <% if (user && (user.role === "admin" || user.id === post.user_id)) { %>
-        <a href="/edit/<%= post.id %>">Edytuj</a>
-        <form action="/delete/<%= post.id %>" method="POST" style="display:inline;">
-          <button>Usuń</button>
-        </form>
-      <% } %>
-
-    </div>
+    <%- include('partials/post-item', { post, user }) %>
   <% }) %>
 
-</body>
-</html>
+<%- include('partials/footer') %>

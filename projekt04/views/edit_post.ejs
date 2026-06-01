@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <title>Edytuj wpis</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
+<%- include('partials/header', { title: 'Edytuj wpis' }) %>
+
   <h1>Edytuj wpis</h1>
   <a href="/">Powrót</a>
 
-  <% if (errors && errors.length > 0) { %>
-    <ul class="errors">
-      <% errors.forEach(err => { %>
-        <li><%= err %></li>
-      <% }) %>
-    </ul>
-  <% } %>
+  <%- include('partials/errors') %>
 
   <form action="/edit/<%= post.id %>" method="post">
     <p>
@@ -28,5 +16,5 @@
     </p>
     <button type="submit">Zapisz</button>
   </form>
-</body>
-</html>
+
+<%- include('partials/footer') %>

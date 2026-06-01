@@ -1,0 +1,14 @@
+<div class="post">
+  <div class="post-header">
+    <h2><%= post.title %></h2>
+    <span class="post-author">Dodane przez: <%= post.author || "Anonim" %></span>
+  </div>
+  <p><%= post.content %></p>
+
+  <% if (user && (user.role === "admin" || user.id === post.user_id)) { %>
+    <a href="/edit/<%= post.id %>">Edytuj</a>
+    <form action="/delete/<%= post.id %>" method="POST" style="display:inline;">
+      <button>Usuń</button>
+    </form>
+  <% } %>
+</div>
